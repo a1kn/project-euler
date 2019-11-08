@@ -1,4 +1,4 @@
-grid =
+string =
   "08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
   49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
   81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
@@ -20,58 +20,44 @@ grid =
   20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
   01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"
 
-a = 0
-b = 3
+grid = string.split.map(&:to_i)
+
 value = 0
-
-loop do
-  if grid.split[a..b].map(&:to_i).reduce(:*) > value
-    value = grid.split[a..b].map(&:to_i).reduce(:*)
-  end
-  a += 1
-  b += 1
- break if b == 399
-end
-
 a = 0
-b = 20
-c = 40
-d = 60
-
-loop do
-  if a.to_i * b.to_i * c.to_i * d.to_i > value
-    value = a.to_i * b.to_i * c.to_i * d.to_i
-  end
-  a += 1
-  b += 1
-  c += 1
-  d += 1
-  break if d == 399
-end
-
-a = 0
-b = 21
-c = 42
-d = 63
-
-5.times do |times|
+1.upto(17) do |time|
   loop do
-    if a.to_i * b.to_i * c.to_i * d.to_i > value
-      value = a.to_i * b.to_i * c.to_i * d.to_i
+    # horizontal
+    if grid[a] * grid[a + 1] * grid[a + 2] * grid[a + 3] > value
+      value = grid[a] * grid[a + 1] * grid[a + 2] * grid[a + 3]
     end
+
+    #diagonal-2
+    if grid[a + 3] * grid[a + 22] * grid[a + 41] * grid[a + 60] > value
+      value = grid[a + 3] * grid[a + 22] * grid[a + 41] * grid[a + 60]
+    end
+    break if a == time * 16
     a += 1
-    b += 1
-    c += 1
-    d += 1
-    break if d == times * 79
   end
-  a += 4
-  b += 4
-  c += 4
-  d += 4
+  a += 3
 end
 
 
+a = 0
+1.upto(17) do |time|
+  loop do
+    #vertical
+    if grid[a] * grid[a + 20] * grid[a + 40] * grid[a + 60] > value
+      value = grid[a] * grid[a + 20] * grid[a + 40] * grid[a + 60]
+    end
 
+    #diagonal-1
+    if grid[a] * grid[a + 21] * grid[a + 42] * grid[a + 63] > value
+      value = grid[a] * grid[a + 21] * grid[a + 42] * grid[a + 63]
+    end
+    break if a == time * 19
+    a += 1
+  end
+  a += 3
+end
 
 p value
